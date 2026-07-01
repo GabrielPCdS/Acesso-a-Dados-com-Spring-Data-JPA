@@ -29,7 +29,7 @@ public class Livro {
     @Column(name = "genero", length = 30, nullable = false)
     private GeneroLivro genero;
 
-    @Column(name = "preco", precision = 18, scale = 2)
+    @Column
     private Double preco;
 
     @ManyToOne
