@@ -3,6 +3,7 @@ package https.github.com.GabrielPCdS.libraryapi.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -25,14 +26,14 @@ public class Livro {
     @Column(name = "data_publicacao")
     private LocalDate dataPublicacao;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "genero", length = 30, nullable = false)
     private GeneroLivro genero;
 
     @Column
-    private Double preco;
+    private BigDecimal preco;
 
-    @ManyToOne
+    @ManyToOne//(cascade = CascadeType.ALL )
     @JoinColumn(name = "id_autor")
     private Autor autor;
 
