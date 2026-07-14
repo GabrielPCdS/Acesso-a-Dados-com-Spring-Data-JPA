@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @SpringBootTest
@@ -117,6 +118,26 @@ class LivroRepositoryTest {
 
         //System.out.println("Autor:");
         //System.out.println(livro.getAutor().getName());
+    }
+
+    @Test
+    void pesquisarPortituloTest(){
+        List<Livro> lista = repository.findByTitulo("O roubo da casa mal assombrada");
+        lista.forEach(System.out::println);
+    }
+
+    @Test
+    void pesquisarPorISBNTest(){
+        List<Livro> lista = repository.findByIsbn("978-85-359-0277-7");
+        lista.forEach(System.out::println);
+    }
+
+    @Test
+    void pesquisarPorTituloEprecoTest(){
+        var preco =BigDecimal.valueOf(204.00);
+        var tituloPesquisa = "O roubo da casa mal assombrada";
+        List<Livro> lista = repository.findByTituloAndPreco(tituloPesquisa, preco);
+        lista.forEach(System.out::println);
     }
 
 }
