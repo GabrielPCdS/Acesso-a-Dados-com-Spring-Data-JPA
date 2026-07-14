@@ -1,9 +1,9 @@
 package https.github.com.GabrielPCdS.libraryapi.repository;
 
-
 import https.github.com.GabrielPCdS.libraryapi.model.Autor;
 import https.github.com.GabrielPCdS.libraryapi.model.GeneroLivro;
 import https.github.com.GabrielPCdS.libraryapi.model.Livro;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -78,6 +78,45 @@ class LivroRepositoryTest {
         livro.setAutor(autor);
 
         repository.save(livro);
+    }
+
+    @Test
+    void  atualizarAutorDoLivro(){
+        UUID id = UUID.fromString("a000a3ab-e944-4c3a-b8fa-4914d81bc188");
+        var livroParaAtualizar = repository.findById(id).orElse(null);
+
+        UUID idAutor = UUID.fromString("b2c3d4e5-f6a7-8b9c-0d1e-2f3a4b5c6d7e");
+        Autor maria = autorRepository.findById(idAutor).orElse(null);
+
+        livroParaAtualizar.setAutor(maria);
+
+        repository.save(livroParaAtualizar);
+
+    }
+
+    @Test
+    void deletar(){
+        UUID id = UUID.fromString("a000a3ab-e944-4c3a-b8fa-4914d81bc188");
+        repository.deleteById(id);
+    }
+
+    @Test
+    void deletarCascade(){
+        UUID id = UUID.fromString("71fa8982-76b4-4321-8188-e0bb749253e4");
+        repository.deleteById(id);
+    }
+
+    @Test
+    @Transactional
+    void buscarLivroTest(){
+        UUID id = UUID.fromString("147e6649-865f-4415-adf8-706330eedd4e");
+        Livro livro = repository.findById(id).orElse(null);
+        System.out.println("Livro:");
+        System.out.println(livro.getTitulo());
+
+
+        //System.out.println("Autor:");
+        //System.out.println(livro.getAutor().getName());
     }
 
 }

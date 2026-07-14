@@ -2,6 +2,7 @@ package https.github.com.GabrielPCdS.libraryapi.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "Livro")
 @Data
+@ToString(exclude =  "autor")
 public class Livro {
 
     @Id
@@ -33,7 +35,11 @@ public class Livro {
     @Column
     private BigDecimal preco;
 
-    @ManyToOne//(cascade = CascadeType.ALL )
+    @ManyToOne(
+            fetch = FetchType.LAZY
+    // cascade = CascadeType.ALL
+
+    )
     @JoinColumn(name = "id_autor")
     private Autor autor;
 
