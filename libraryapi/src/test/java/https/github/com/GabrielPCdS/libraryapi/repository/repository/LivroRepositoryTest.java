@@ -1,8 +1,10 @@
-package https.github.com.GabrielPCdS.libraryapi.repository;
+package https.github.com.GabrielPCdS.libraryapi.repository.repository;
 
 import https.github.com.GabrielPCdS.libraryapi.model.Autor;
 import https.github.com.GabrielPCdS.libraryapi.model.GeneroLivro;
 import https.github.com.GabrielPCdS.libraryapi.model.Livro;
+import https.github.com.GabrielPCdS.libraryapi.repository.AutorRepository;
+import https.github.com.GabrielPCdS.libraryapi.repository.LivroRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
