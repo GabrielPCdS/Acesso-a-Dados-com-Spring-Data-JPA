@@ -29,12 +29,12 @@ class LivroRepositoryTest {
         Livro livro = new Livro();
         livro.setIsbn("90887-84874");
         livro.setPreco(BigDecimal.valueOf(100));
-        livro.setGenero(GeneroLivro.FICCAO);
-        livro.setTitulo("Outro Livro");
+        livro.setGenero(GeneroLivro.MISTERIO);
+        livro.setTitulo("Espelho Vivo");
         livro.setDataPublicacao(LocalDate.of(1980, 1, 2));
 
         Autor autor = autorRepository
-               .findById(UUID.fromString("683e77ad-51ca-457b-8b38-cdb7fbb01f4b"))
+               .findById(UUID.fromString("7da6c7fa-f6a4-40be-9ff7-93ccddfaf06e"))
                .orElse(null);
 
         livro.setAutor(autor);
@@ -139,5 +139,53 @@ class LivroRepositoryTest {
         List<Livro> lista = repository.findByTituloAndPreco(tituloPesquisa, preco);
         lista.forEach(System.out::println);
     }
+
+    @Test
+    void listarLivrosComQueryJPQL(){
+        var resultado = repository.listarTodosOrdenadoPorTituloAndPreco();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarAutoresDosLivros(){
+        var resultado = repository.listarAutoresDosLivros();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarTitulosNaoRepetidosDoslivros(){
+        var resultado = repository.listarNomesDiferentesLivrps();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarGenerosDelivrosAutoresBrasileiros(){
+        var resultado = repository.listarGenerosAutoresBrasileiros();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarPorGeneroQueryParamTest() {
+        var resultado = repository.findByGenero(GeneroLivro.MISTERIO, "preco");
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarPorGeneroPositionalParamTest() {
+        var resultado = repository.findByGeneroPositionalParameters("preco", GeneroLivro.MISTERIO);
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void deleterPorGeneroTest(){
+        repository.deleteByGenero(GeneroLivro.CIENCIA);
+    }
+
+    @Test
+    void updateDataPublicacaoTest(){
+        repository.updateDataPublicacao(LocalDate.of(2000, 1,1));
+    }
+
+
 
 }

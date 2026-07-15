@@ -1,10 +1,16 @@
 package https.github.com.GabrielPCdS.libraryapi.repository;
 
 import https.github.com.GabrielPCdS.libraryapi.model.Autor;
+import https.github.com.GabrielPCdS.libraryapi.model.GeneroLivro;
 import https.github.com.GabrielPCdS.libraryapi.model.Livro;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,5 +30,52 @@ public interface LivroRepository extends JpaRepository<Livro, UUID> {
     List<Livro> findByTituloAndPreco(String titulo, BigDecimal preco);
 
     //select * from livro where titulo = ? or isbn = ?
-    List<Livro> findbytituloOrIsbn(String titulo, String isbn);
+    List<Livro> findBytituloOrIsbn(String titulo, String isbn);
+
+    // select * from livro where data_publicaçao between ? and ?
+    List<Livro> findByDataPublicacaoBetween(LocalDate inicio, LocalDate fim);
+
+    //JPQL -> referencia as entidades e as propriedades
+    @Query(" select l from Livro as l order by l.titulo, l.preco")
+    List<Livro> listarTodosOrdenadoPorTituloAndPreco();
+
+
+    @Query("select a from Livro l join l.autor a")
+    List<Autor> listarAutoresDosLivros();
+
+
+    // "select distnct l* from livro l"
+    @Query("select distinct l.titulo from Livro l")
+    List<String> listarNomesDiferentesLivrps();
+
+    @Query("""
+    select l.genero
+    from Livro l
+    join l.autor a
+    where a.nacionalidade = 'Brasileira'
+    order by l.genero
+    """)
+    List<String> listarGenerosAutoresBrasileiros();
+
+    //named parameters -> parametros nomeados
+    @Query("select l from Livro l where l.genero = :genero order by :paramOrdenacao")
+    List<Livro> findByGenero(
+            @Param("genero")GeneroLivro generoLivro,
+            @Param("paramOrdenacao") String nomePropriedade
+            );
+
+    @Query("select l from Livro l where l.genero = ?2 order by ?1 ")
+    List<Livro> findByGeneroPositionalParameters(String nomePropriedade, GeneroLivro generoLivro);
+
+
+    @Modifying
+    @Transactional
+    @Query(" delete from Livro l Where l.genero = ?1")
+    void deleteByGenero(GeneroLivro genero);
+
+    @Modifying
+    @Transactional
+    @Query("update Livro set dataPublicacao = ?1")
+    void updateDataPublicacao(LocalDate novaData);
+
 }
