@@ -3,8 +3,10 @@ package https.github.com.GabrielPCdS.libraryapi.controller.dto;
 import https.github.com.GabrielPCdS.libraryapi.model.Autor;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public record AutorDTO(
+        UUID id,
         String nome,
         LocalDate dataNascimento,
         String nacionalidade) {
